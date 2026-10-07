@@ -4,183 +4,309 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Drywall Calculator - Calculate How Many Sheets You Need</title>
-  <meta name="description" content="Use our free drywall calculator to estimate how many sheets of drywall you need for walls and ceilings. Calculate square footage, waste, and material costs.">
+  <title>Drywall Calculator | Calculate How Many Sheets You Need</title>
+
+  <meta
+    name="description"
+    content="Free drywall calculator to estimate drywall sheets, square footage, waste, and material cost for walls and ceilings."
+  >
+
+  <meta name="robots" content="index, follow">
 
   <style>
     * {
       box-sizing: border-box;
     }
 
+    :root {
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --navy: #172033;
+      --background: #f5f7fa;
+      --border: #d8dee8;
+      --text: #172033;
+      --muted: #64748b;
+      --green: #047857;
+    }
+
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background: #f4f6f8;
-      color: #1f2937;
+      background: var(--background);
+      color: var(--text);
       line-height: 1.6;
     }
 
     header {
-      background: #1f2937;
+      background: var(--navy);
       color: white;
-      padding: 32px 20px;
+      padding: 42px 20px;
       text-align: center;
     }
 
     header h1 {
-      margin: 0 0 8px;
-      font-size: 2rem;
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
     }
 
     header p {
-      margin: 0;
-      color: #d1d5db;
+      margin: 0 auto;
+      max-width: 650px;
+      color: #dbe3ef;
+      font-size: 1.05rem;
     }
 
     main {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
+      max-width: 960px;
+      margin: 36px auto;
+      padding: 0 18px;
     }
 
     .calculator {
       background: white;
-      border-radius: 14px;
-      padding: 28px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      padding: clamp(20px, 4vw, 36px);
+      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
     }
 
     .section {
-      margin-bottom: 28px;
+      margin-bottom: 30px;
     }
 
     .section h2 {
-      margin-top: 0;
-      font-size: 1.25rem;
-      color: #111827;
+      margin: 0 0 16px;
+      font-size: 1.3rem;
+    }
+
+    .section-description {
+      color: var(--muted);
+      margin-top: -8px;
+      margin-bottom: 18px;
+      font-size: 0.95rem;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
     }
 
-    label {
+    .field label {
       display: block;
-      font-weight: 600;
-      margin-bottom: 6px;
+      font-weight: 700;
+      margin-bottom: 7px;
     }
 
     input,
     select {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: white;
+      color: var(--text);
       font-size: 16px;
     }
 
     input:focus,
     select:focus {
-      outline: 2px solid #2563eb;
-      border-color: #2563eb;
+      outline: 3px solid rgba(37, 99, 235, 0.18);
+      border-color: var(--blue);
     }
 
-    .checkbox {
+    .hint {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-top: 5px;
+    }
+
+    .checkbox-row {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-top: 10px;
+      margin-top: 5px;
     }
 
-    .checkbox input {
-      width: auto;
+    .checkbox-row input {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--blue);
+    }
+
+    .checkbox-row label {
+      margin: 0;
+      font-weight: 700;
     }
 
     button {
       width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 8px;
-      background: #2563eb;
+      min-height: 52px;
+      border: 0;
+      border-radius: 9px;
+      background: var(--blue);
       color: white;
       font-size: 17px;
-      font-weight: bold;
+      font-weight: 700;
       cursor: pointer;
     }
 
     button:hover {
-      background: #1d4ed8;
+      background: var(--blue-dark);
+    }
+
+    button:focus {
+      outline: 3px solid rgba(37, 99, 235, 0.3);
+      outline-offset: 2px;
+    }
+
+    .error {
+      margin-top: 12px;
+      color: #b91c1c;
+      font-weight: 700;
     }
 
     .results {
-      margin-top: 28px;
-      padding: 24px;
+      margin-top: 30px;
+      padding: 26px;
+      border-radius: 12px;
       background: #eff6ff;
-      border-radius: 10px;
       border: 1px solid #bfdbfe;
     }
 
     .results h2 {
       margin-top: 0;
+      margin-bottom: 18px;
     }
 
     .result-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
     }
 
     .result-card {
       background: white;
-      padding: 18px;
-      border-radius: 8px;
       border: 1px solid #dbeafe;
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    .result-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 5px;
     }
 
     .result-card strong {
       display: block;
+      color: var(--blue-dark);
       font-size: 1.5rem;
-      color: #1d4ed8;
     }
 
-    .explanation {
-      margin-top: 40px;
+    .result-card.primary {
+      border: 2px solid var(--blue);
+    }
+
+    .result-card.primary strong {
+      color: var(--green);
+      font-size: 1.9rem;
+    }
+
+    .breakdown {
+      margin-top: 22px;
       background: white;
-      padding: 28px;
-      border-radius: 14px;
+      border-radius: 10px;
+      padding: 18px;
+      border: 1px solid #dbeafe;
     }
 
-    .explanation h2 {
-      color: #111827;
+    .breakdown h3 {
+      margin-top: 0;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 8px 0;
+      border-bottom: 1px solid #eef2f7;
+    }
+
+    .breakdown-row:last-child {
+      border-bottom: 0;
+    }
+
+    .cost {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 10px;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+    }
+
+    .cost strong {
+      color: var(--green);
+      font-size: 1.5rem;
+    }
+
+    .content {
+      margin-top: 36px;
+      background: white;
+      border-radius: 16px;
+      padding: clamp(22px, 4vw, 36px);
+    }
+
+    .content h2 {
+      margin-top: 0;
+      color: var(--navy);
+    }
+
+    .content h3 {
+      margin-top: 28px;
+      color: var(--navy);
+    }
+
+    .content p {
+      color: #475569;
+    }
+
+    .content ul {
+      color: #475569;
+    }
+
+    .faq {
+      border-top: 1px solid #e5e7eb;
+      margin-top: 30px;
+      padding-top: 10px;
     }
 
     footer {
       text-align: center;
-      padding: 30px 20px;
-      color: #6b7280;
-      font-size: 14px;
+      padding: 32px 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
     }
 
-    .error {
-      color: #b91c1c;
-      margin-top: 12px;
-      font-weight: 600;
-    }
-
-    @media (max-width: 650px) {
+    @media (max-width: 700px) {
       .grid,
       .result-grid {
         grid-template-columns: 1fr;
       }
 
-      .calculator {
-        padding: 20px;
+      header {
+        padding: 34px 18px;
       }
 
-      header h1 {
-        font-size: 1.6rem;
+      .calculator,
+      .content {
+        border-radius: 12px;
+      }
+
+      .breakdown-row {
+        flex-direction: column;
+        gap: 2px;
       }
     }
   </style>
@@ -190,41 +316,70 @@
 
 <header>
   <h1>Drywall Calculator</h1>
-  <p>Calculate how many sheets of drywall you need for your project.</p>
+  <p>
+    Estimate the drywall sheets, square footage, waste, and material cost
+    for your walls and ceiling.
+  </p>
 </header>
 
 <main>
 
-  <div class="calculator">
+  <section class="calculator">
 
     <form id="drywallForm">
 
       <div class="section">
-        <h2>Room Dimensions</h2>
+        <h2>1. Room Dimensions</h2>
+
+        <p class="section-description">
+          Enter the dimensions of the room you are drywalling.
+        </p>
 
         <div class="grid">
 
-          <div>
+          <div class="field">
             <label for="length">Room Length (ft)</label>
-            <input type="number" id="length" min="0" step="0.1" placeholder="Example: 20" required>
+            <input
+              id="length"
+              type="number"
+              min="0.1"
+              step="0.1"
+              placeholder="20"
+              required
+            >
           </div>
 
-          <div>
+          <div class="field">
             <label for="width">Room Width (ft)</label>
-            <input type="number" id="width" min="0" step="0.1" placeholder="Example: 15" required>
+            <input
+              id="width"
+              type="number"
+              min="0.1"
+              step="0.1"
+              placeholder="15"
+              required
+            >
           </div>
 
-          <div>
+          <div class="field">
             <label for="height">Wall Height (ft)</label>
-            <input type="number" id="height" min="0" step="0.1" placeholder="Example: 8" required>
+            <input
+              id="height"
+              type="number"
+              min="0.1"
+              step="0.1"
+              placeholder="8"
+              required
+            >
           </div>
 
-          <div>
+          <div class="field">
             <label for="sheetSize">Drywall Sheet Size</label>
+
             <select id="sheetSize">
-              <option value="32">4 × 8 ft (32 sq ft)</option>
-              <option value="40">4 × 10 ft (40 sq ft)</option>
-              <option value="48">4 × 12 ft (48 sq ft)</option>
+              <option value="32">4 × 8 ft — 32 sq ft</option>
+              <option value="40">4 × 10 ft — 40 sq ft</option>
+              <option value="48">4 × 12 ft — 48 sq ft</option>
             </select>
           </div>
 
@@ -233,58 +388,133 @@
 
       <div class="section">
 
-        <h2>Ceiling</h2>
+        <h2>2. Ceiling</h2>
 
-        <div class="checkbox">
+        <div class="checkbox-row">
           <input type="checkbox" id="includeCeiling">
-          <label for="includeCeiling">Include ceiling drywall</label>
+          <label for="includeCeiling">
+            Include ceiling drywall
+          </label>
         </div>
 
       </div>
 
       <div class="section">
 
-        <h2>Doors & Windows</h2>
+        <h2>3. Doors & Windows</h2>
+
+        <p class="section-description">
+          The calculator uses standard opening sizes. You can customize
+          the dimensions below if needed.
+        </p>
 
         <div class="grid">
 
-          <div>
-            <label for="doors">Number of Doors</label>
-            <input type="number" id="doors" min="0" step="1" value="0">
+          <div class="field">
+            <label for="doorCount">Number of Doors</label>
+            <input
+              id="doorCount"
+              type="number"
+              min="0"
+              step="1"
+              value="0"
+            >
           </div>
 
-          <div>
-            <label for="windows">Number of Windows</label>
-            <input type="number" id="windows" min="0" step="1" value="0">
+          <div class="field">
+            <label for="doorArea">Door Area (sq ft each)</label>
+            <input
+              id="doorArea"
+              type="number"
+              min="0"
+              step="0.1"
+              value="21"
+            >
+            <div class="hint">Typical 3 × 7 ft door = 21 sq ft</div>
+          </div>
+
+          <div class="field">
+            <label for="windowCount">Number of Windows</label>
+            <input
+              id="windowCount"
+              type="number"
+              min="0"
+              step="1"
+              value="0"
+            >
+          </div>
+
+          <div class="field">
+            <label for="windowArea">Window Area (sq ft each)</label>
+            <input
+              id="windowArea"
+              type="number"
+              min="0"
+              step="0.1"
+              value="15"
+            >
+            <div class="hint">Example: 3 × 5 ft window = 15 sq ft</div>
           </div>
 
         </div>
-
-        <p style="font-size: 14px; color: #6b7280;">
-          We estimate each door at 21 sq ft and each window at 15 sq ft.
-        </p>
 
       </div>
 
       <div class="section">
 
-        <h2>Waste Factor</h2>
+        <h2>4. Waste Factor</h2>
 
         <select id="waste">
-          <option value="0.05">5% - Minimal waste</option>
-          <option value="0.10" selected>10% - Recommended</option>
-          <option value="0.15">15% - Complex project</option>
+          <option value="0.05">5% — Simple layout</option>
+          <option value="0.10" selected>10% — Recommended</option>
+          <option value="0.15">15% — More complex layout</option>
         </select>
 
       </div>
 
-      <button type="submit">Calculate Drywall Needed</button>
+      <div class="section">
 
-      <div id="error" class="error"></div>
+        <h2>5. Optional Material Cost</h2>
+
+        <div class="field">
+          <label for="price">
+            Price per drywall sheet
+          </label>
+
+          <input
+            id="price"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Example: 18.00"
+          >
+
+          <div class="hint">
+            Leave blank if you only want the sheet estimate.
+          </div>
+        </div>
+
+      </div>
+
+      <button type="submit">
+        Calculate Drywall Needed
+      </button>
+
+      <div
+        id="error"
+        class="error"
+        role="alert"
+        aria-live="polite"
+      ></div>
 
     </form>
 
-    <div id="results" class="results" style="display: none;">
+    <section
+      id="results"
+      class="results"
+      style="display:none;"
+      aria-live="polite"
+    >
 
       <h2>Your Drywall Estimate</h2>
 
@@ -306,126 +536,250 @@
         </div>
 
         <div class="result-card">
-          <span>Area With Waste</span>
+          <span>Area + Waste</span>
           <strong id="wasteArea">0 sq ft</strong>
         </div>
 
-        <div class="result-card">
+        <div class="result-card primary">
           <span>Drywall Sheets Needed</span>
           <strong id="sheets">0</strong>
         </div>
 
+        <div class="result-card">
+          <span>Waste Allowance</span>
+          <strong id="wastePercent">10%</strong>
+        </div>
+
       </div>
 
-    </div>
+      <div class="breakdown">
 
-  </div>
+        <h3>Calculation Breakdown</h3>
 
-  <section class="explanation">
+        <div class="breakdown-row">
+          <span>Wall surface area</span>
+          <strong id="wallBreakdown">0 sq ft</strong>
+        </div>
 
-    <h2>How Does the Drywall Calculator Work?</h2>
+        <div class="breakdown-row">
+          <span>Door deductions</span>
+          <strong id="doorDeduction">0 sq ft</strong>
+        </div>
 
-    <p>
-      Our drywall calculator estimates the amount of drywall needed based
-      on your room dimensions. Enter the length, width, and wall height
-      of the room, then choose your drywall sheet size.
-    </p>
+        <div class="breakdown-row">
+          <span>Window deductions</span>
+          <strong id="windowDeduction">0 sq ft</strong>
+        </div>
 
-    <p>
-      The calculator estimates the wall area and can also include the
-      ceiling. Doors and windows are deducted from the total area, and
-      a waste factor is added to help account for cuts, mistakes, and
-      unusable pieces.
-    </p>
+        <div class="breakdown-row">
+          <span>Ceiling</span>
+          <strong id="ceilingBreakdown">0 sq ft</strong>
+        </div>
+
+        <div class="breakdown-row">
+          <span>Sheet coverage</span>
+          <strong id="sheetCoverage">32 sq ft</strong>
+        </div>
+
+      </div>
+
+      <div
+        id="costBox"
+        class="cost"
+        style="display:none;"
+      >
+        Estimated drywall material cost:
+        <strong id="cost">$0.00</strong>
+      </div>
+
+    </section>
+
+  </section>
+
+  <section class="content">
 
     <h2>How Many Sheets of Drywall Do I Need?</h2>
 
     <p>
-      The number of drywall sheets depends on the total square footage
-      of your walls and ceilings and the size of the drywall sheets.
-      A standard 4 × 8 foot sheet covers 32 square feet.
+      Use the drywall calculator above to estimate how many sheets of
+      drywall you'll need for a room. Enter the room length, width, and
+      wall height, then choose your drywall sheet size.
     </p>
+
+    <p>
+      The calculator estimates the surface area of the walls and can
+      include the ceiling. It also subtracts doors and windows and adds
+      a waste allowance to account for cutting and unusable pieces.
+    </p>
+
+    <h3>How Is Drywall Calculated?</h3>
+
+    <p>
+      Wall area is calculated using the room's perimeter multiplied by
+      the wall height. Door and window areas are then deducted from the
+      wall area. If the ceiling is included, the room length is multiplied
+      by the room width to determine the ceiling area.
+    </p>
+
+    <p>
+      Finally, the selected waste percentage is added and the result is
+      divided by the square footage covered by one drywall sheet.
+      The result is rounded up to the next whole sheet.
+    </p>
+
+    <h3>Standard Drywall Sheet Sizes</h3>
+
+    <ul>
+      <li>4 × 8 foot sheet = 32 square feet</li>
+      <li>4 × 10 foot sheet = 40 square feet</li>
+      <li>4 × 12 foot sheet = 48 square feet</li>
+    </ul>
+
+    <p>
+      Larger sheets can reduce the number of seams, but they can also be
+      harder to transport and handle. The best sheet size depends on the
+      room layout and installation conditions.
+    </p>
+
+    <div class="faq">
+
+      <h3>Frequently Asked Questions</h3>
+
+      <h3>How much drywall do I need for a 12 × 12 room?</h3>
+
+      <p>
+        The answer depends on the wall height, whether the ceiling is
+        included, the number and size of openings, the drywall sheet size,
+        and the amount of waste you allow. Enter your dimensions above for
+        an estimate.
+      </p>
+
+      <h3>How much area does a 4 × 8 sheet of drywall cover?</h3>
+
+      <p>
+        A standard 4 × 8 foot drywall sheet covers 32 square feet before
+        accounting for cuts and waste.
+      </p>
+
+      <h3>Should I add extra drywall for waste?</h3>
+
+      <p>
+        Yes. Cuts, damaged pieces, awkward layouts, and installation
+        mistakes can create waste. A 10% allowance is a reasonable starting
+        point for many straightforward projects, although complex layouts
+        may require more.
+      </p>
+
+    </div>
 
   </section>
 
 </main>
 
 <footer>
-  <p>Drywall Calculator — Free online drywall estimating tool.</p>
+  Drywall Calculator — Free drywall estimating tool.
 </footer>
 
 <script>
-
   const form = document.getElementById("drywallForm");
 
   form.addEventListener("submit", function(event) {
-
     event.preventDefault();
 
     const length = Number(document.getElementById("length").value);
     const width = Number(document.getElementById("width").value);
     const height = Number(document.getElementById("height").value);
 
-    const sheetArea = Number(document.getElementById("sheetSize").value);
+    const sheetArea =
+      Number(document.getElementById("sheetSize").value);
 
     const includeCeiling =
       document.getElementById("includeCeiling").checked;
 
-    const doors =
-      Number(document.getElementById("doors").value) || 0;
+    const doorCount =
+      Number(document.getElementById("doorCount").value) || 0;
 
-    const windows =
-      Number(document.getElementById("windows").value) || 0;
+    const doorArea =
+      Number(document.getElementById("doorArea").value) || 0;
+
+    const windowCount =
+      Number(document.getElementById("windowCount").value) || 0;
+
+    const windowArea =
+      Number(document.getElementById("windowArea").value) || 0;
 
     const waste =
       Number(document.getElementById("waste").value);
 
-    const error = document.getElementById("error");
+    const price =
+      Number(document.getElementById("price").value) || 0;
+
+    const error =
+      document.getElementById("error");
 
     if (
+      !Number.isFinite(length) ||
+      !Number.isFinite(width) ||
+      !Number.isFinite(height) ||
       length <= 0 ||
       width <= 0 ||
       height <= 0
     ) {
-
       error.textContent =
         "Please enter valid room dimensions greater than zero.";
+      return;
+    }
 
+    if (
+      doorCount < 0 ||
+      windowCount < 0 ||
+      doorArea < 0 ||
+      windowArea < 0 ||
+      price < 0
+    ) {
+      error.textContent =
+        "Please enter valid non-negative values.";
       return;
     }
 
     error.textContent = "";
 
-    // Calculate wall area.
     const perimeter = 2 * (length + width);
 
-    let wallArea = perimeter * height;
+    const grossWallArea =
+      perimeter * height;
 
-    // Estimated deductions.
-    const doorArea = doors * 21;
-    const windowArea = windows * 15;
+    const totalDoorDeduction =
+      doorCount * doorArea;
 
-    wallArea -= doorArea + windowArea;
+    const totalWindowDeduction =
+      windowCount * windowArea;
 
-    // Prevent negative area.
-    wallArea = Math.max(0, wallArea);
+    const wallArea =
+      Math.max(
+        0,
+        grossWallArea -
+        totalDoorDeduction -
+        totalWindowDeduction
+      );
 
-    // Calculate ceiling.
     const ceilingArea =
-      includeCeiling ? length * width : 0;
+      includeCeiling
+        ? length * width
+        : 0;
 
     const totalArea =
       wallArea + ceilingArea;
 
-    // Add waste.
     const areaWithWaste =
       totalArea * (1 + waste);
 
-    // Calculate sheets.
     const sheets =
       Math.ceil(areaWithWaste / sheetArea);
 
-    // Display results.
+    const estimatedCost =
+      sheets * price;
+
     document.getElementById("wallArea").textContent =
       `${wallArea.toFixed(1)} sq ft`;
 
@@ -441,6 +795,39 @@
     document.getElementById("sheets").textContent =
       sheets;
 
+    document.getElementById("wastePercent").textContent =
+      `${Math.round(waste * 100)}%`;
+
+    document.getElementById("wallBreakdown").textContent =
+      `${grossWallArea.toFixed(1)} sq ft`;
+
+    document.getElementById("doorDeduction").textContent =
+      `−${totalDoorDeduction.toFixed(1)} sq ft`;
+
+    document.getElementById("windowDeduction").textContent =
+      `−${totalWindowDeduction.toFixed(1)} sq ft`;
+
+    document.getElementById("ceilingBreakdown").textContent =
+      `${ceilingArea.toFixed(1)} sq ft`;
+
+    document.getElementById("sheetCoverage").textContent =
+      `${sheetArea} sq ft`;
+
+    const costBox =
+      document.getElementById("costBox");
+
+    if (price > 0) {
+      document.getElementById("cost").textContent =
+        new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD"
+        }).format(estimatedCost);
+
+      costBox.style.display = "block";
+    } else {
+      costBox.style.display = "none";
+    }
+
     document.getElementById("results").style.display =
       "block";
 
@@ -448,9 +835,7 @@
       behavior: "smooth",
       block: "start"
     });
-
   });
-
 </script>
 
 </body>
